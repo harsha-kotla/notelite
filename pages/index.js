@@ -1,11 +1,22 @@
 import Navbar from '@/components/Navbar'
 import Head from 'next/head'
 import { useSession, signIn, signOut } from "next-auth/react"
+import { useEffect, useState } from 'react';
+import NotebookLi from '@/components/NotebookLi';
+import axios from "axios"
 
 export default function Home() {
   const { data: session } = useSession();
-  
-  
+  const [notebooks, setNotebooks] = useState([])
+  useEffect(() => {
+    async function getNotebooks() {
+      const data = await axios.get("/api/notebookfuncs/getNotebooks")
+      console.log(data.data)
+      setNotebooks(data.data.data)
+
+    }
+    getNotebooks()
+  }, [notebooks])
   return (
     <>
       <Head>
@@ -24,11 +35,25 @@ export default function Home() {
  <Navbar/><br/>
       <div class="container">
         {session && (
+          <>
+          
         <h5>Howdy, {session.user.name}</h5>
-
+        <br/>
+          </>
         )}
         
-
+        {session && (
+          <>
+        {notebooks.map(notebook => 
+          <NotebookLi title={notebook.name} descr={notebook.description} uemail={notebook.uemail}/>
+        )}
+        </>
+        )}
+        {!session && (
+          <>
+          <h3>Take notes, use notes, and store notes all on Notelite</h3>
+          </>
+        )}
       </div>
       </main>
     </>

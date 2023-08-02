@@ -1,9 +1,11 @@
 import { useSession, signIn, signOut } from "next-auth/react"
+import Link from "next/link"
 
 export default function Navbar() {
     const { data: session } = useSession()
     return (
         <>
+        
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style={{borderBottom: "1px solid lightgray"}}>
         <div class="container">
             <a class="navbar-brand" href="/">
@@ -13,24 +15,25 @@ export default function Navbar() {
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 {session && (
                 <>
                 <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/">Home</a>
+                <Link class="nav-link" aria-current="page" href="/">Home</Link>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/explore">Explore</a>
+                <Link class="nav-link" href="/explore">Explore</Link>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="/new">New notebook</a>
+                <Link class="nav-link" href="/new">New notebook</Link>
                 </li>
                 </>)}
                 {!session&& (
                     <>
                     <li class="nav-item">
-                    <a class="nav-link" href="/api/auth/signin">Log in</a>
+                    <Link class="nav-link" href="/api/auth/signin">Log in</Link>
                     </li>
                     </>
                 )}
@@ -41,24 +44,21 @@ export default function Navbar() {
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             {session && (
-            <ul class="navbar-nav">
+            <div class="btn-group dropstart">
+            <a type="button" id="dropbtn" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style={{padding: 0, marginLeft: 10}}>
+            <img src={session.user.image} style={{width: 40, borderRadius: "50%", border: "1px solid lightgray"}}/>
 
-            
-            <li class="nav-item dropdown dropleft">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src={session.user.image} style={{width: 40, borderRadius: "50%", border: "1px solid lightgray"}}/>
-                </a>
-               
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><Link className="dropdown-item" href="/settings">Settings</Link></li>
                     <li><hr class="dropdown-divider"/></li>
-                    <li><a class="dropdown-item" href="/api/auth/signout">Log out</a></li>
-                </ul>
-                </li>
-
-            </ul>)}
+                    <li><Link class="dropdown-item" href="/api/auth/signout">Log out</Link></li>
+            </ul>
+            </div>)}
             
             </div>
+            
         </div>
         </nav><br/><br/><br/>
         </>

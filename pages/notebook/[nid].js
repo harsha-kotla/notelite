@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import axios from "axios"
 import Link from "next/link";
 import Pageli from "@/components/Pageli";
+import { useSession } from "next-auth/react"
 
 export default function notebook() {
+    const { data: session } = useSession()
+
     const router = useRouter();
     const nid = router.query.nid;
     const [notebook, setNotebook] = useState()
@@ -70,10 +73,26 @@ export default function notebook() {
 
             </>
           )}<br/>
+          {session && notebook && session.user.name === notebook.uemail && (
+            <>  
             <button className="btn btn-outline-dark btn-sm" onClick={addPage} style={{marginBottom: 20}}>+ New page</button><br/>
+
+            </>
+          )}
             <ul class="list-group">
-            {pages.map(p => 
+            {session && notebook && session.user.name === notebook.uemail && (
+                <>
+                {pages.map(p => 
                 <Pageli link={`/pages/edit/${p.id}`} title={p.title}/>
+            )}
+                </>
+            )}
+            {!(session && notebook && session.user.name === notebook.uemail) && (
+                <>
+                {pages.map(p => 
+                <Pageli link={`/pages/view/${p.id}`} title={p.title}/>
+            )}
+                </>
             )}
             
            

@@ -1,9 +1,15 @@
 import { useSession, signIn, signOut } from "next-auth/react"
+import { redirect } from 'next/navigation'
 import Link from "next/link"
+import { useState } from "react"
 
 export default function Navbar() {
     const { data: session } = useSession()
-    
+    const [term, setTerm] = useState()
+    const handleSearch = (e) => {
+        e.preventDefault();
+        window.location.replace(`/search/${term}`)
+    }
     return (
         <>
         
@@ -40,8 +46,8 @@ export default function Navbar() {
                 )}
                
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+            <form class="d-flex" onSubmit={handleSearch}>
+                <input value={term} onChange={(e) => setTerm(e.target.value)} class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             {session && (

@@ -4,8 +4,10 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import { useEffect, useState } from 'react';
 import NotebookLi from '@/components/NotebookLi';
 import axios from "axios"
+import { useRouter } from 'next/router';
 
-export default function Home() {
+export default function term() {
+    const router = useRouter();
   const { data: session } = useSession();
   const [notebooks, setNotebooks] = useState([])
   useEffect(() => {
@@ -36,18 +38,20 @@ export default function Home() {
         {session && (
           <>
           
-        <h5>Howdy, {session.user.name}</h5>
+        <h5>Search results for "{router.query.term}"</h5>
         <br/>
           </>
         )}
         
-        {session && (
           <>
         {notebooks.map(notebook => 
-          <NotebookLi title={notebook.name} descr={notebook.description} uemail={notebook.uemail} term="" id={notebook.id}/> 
+          <>
+          
+          <NotebookLi title={notebook.name} descr={notebook.description} uemail={notebook.uemail} id={notebook.id} term={router.query.term}/> 
+          </>
         )}
         </>
-        )}
+        
         {!session && (
           <>
           <h3>Take notes, use notes, and store notes all on Notelite</h3>

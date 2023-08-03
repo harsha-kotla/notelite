@@ -3,8 +3,8 @@ import { useSession } from "next-auth/react";
 
 export default function NotebookLi(props) {
     const { data: session } = useSession()
-
-    if (session.user.name == props.uemail) {
+    
+    if (props.title.toLowerCase().includes(props.term.toLowerCase())) {
     return (
         <>
             <div>
@@ -13,10 +13,12 @@ export default function NotebookLi(props) {
                 <h5 class="mb-1" >{props.title}</h5>
                 <small>Public</small>
                 </div>
+                <p class="mb-1">By {props.uemail}</p>
                 <p class="mb-1">{props.descr}</p>
             </a>
             </div><br/>
         </>
     )
     }
+    
 }

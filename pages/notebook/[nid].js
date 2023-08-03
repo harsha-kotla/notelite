@@ -3,12 +3,14 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios"
+import Link from "next/link";
+import Pageli from "@/components/Pageli";
 
-export default function id() {
+export default function notebook() {
     const router = useRouter();
     const nid = router.query.nid;
     const [notebook, setNotebook] = useState()
-    
+    const [pages, setPages] = useState([])
     
     useEffect(() => {
         const data = axios.post(`/api/notebookfuncs/getNotebook`, {
@@ -19,7 +21,24 @@ export default function id() {
             setNotebook(response.data.notebook)
         }).catch(function (error) {
         });
-    }, notebook)
+
+        const pages = axios.post("/api/notebookfuncs/getPagesByNotebook", {
+            nid: nid,
+        }).then(function (response) {
+            setPages(response.data.pages)
+        }).catch(function (error) {
+            alert(error)
+        });
+    }, [nid])
+    console.log(pages)
+    function addPage() {
+        const d = axios.post("/api/pagefuncs/createPage", {
+            nid: nid,
+        }).then((response) => {
+            window.location.replace(`/pages/edit/${response.data.data.id}`)
+        })
+      
+    }
     return (
         <>
         <Head>
@@ -40,17 +59,25 @@ export default function id() {
           {notebook && (
             <>
             <nav class="navbar navbar-light" style={{borderBottom: "1px solid lightgray"}}>
-            <a class="navbar-brand">
+                <div>
+            <a class="navbar-brand mb-0 h1" style={{marginRight:3, fontSize: 24}}>
             {notebook.name}
-            </a>
-            <form class="form-inline">
-                <button className="btn btn-primary">+ New page</button>
-            </form>
+            </a> by {notebook.uemail}</div>
+            <div class="form-inline">
+                <button className="btn btn-dark" style={{paddingTop: 2, paddingBottom: 2}}>★ Star (0)</button>
+            </div>
             </nav>
 
             </>
-          )}
-        
+          )}<br/>
+            <button className="btn btn-outline-dark btn-sm" onClick={addPage} style={{marginBottom: 20}}>+ New page</button><br/>
+            <ul class="list-group">
+            {pages.map(p => 
+                <Pageli link={`/pages/edit/${p.id}`} title={p.title}/>
+            )}
+            
+           
+            </ul>
       </div>
       </main>
         </>

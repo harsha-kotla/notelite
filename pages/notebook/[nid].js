@@ -12,26 +12,20 @@ export default function notebook() {
 
     const router = useRouter();
     const nid = router.query.nid;
-    const [notebook, setNotebook] = useState()
+    const [notebook, setNotebook] = useState({})
     const [pages, setPages] = useState([])
     
     useEffect(() => {
-        const data = axios.post(`/api/notebookfuncs/getNotebook`, {
-            nid: nid,
+        async function get() {
+            const data = await axios.get(`/api/pagefuncs/getNbByPageId/${nid}`)
+            setNotebook(data.data.notebook)
     
-           
-        }).then(function (response) {
-            setNotebook(response.data.notebook)
-        }).catch(function (error) {
-        });
-
-        const pages = axios.post("/api/notebookfuncs/getPagesByNotebook", {
-            nid: nid,
-        }).then(function (response) {
-            setPages(response.data.pages)
-        }).catch(function (error) {
-            alert(error)
-        });
+            const res2 = await axios.get(`/api/notebookfuncs/getPagesByNotebook/${nid}`)
+            setPages(res2.data.pages)
+            
+        }
+        get()
+        
     }, [nid])
     console.log(pages)
     function addPage() {

@@ -7,12 +7,12 @@ export default async function handler(req, res) {
         
         const { id } = req.query;
         try {
-            const nb = await prisma.notebook.findUnique({
+            const p = await prisma.page.findMany({
                 where: {
-                id: parseInt(id),
+                nbId: parseInt(id),
                 },
             })
-            return res.json({notebook: nb})
+            return res.json({pages: p})
         } catch (err) {
         }
     }

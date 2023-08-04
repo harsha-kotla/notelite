@@ -94,12 +94,9 @@ export default function editpage() {
       async function getnotebook() {
         try {
 
-          axios.post("/api/pagefuncs/getNbByPageId", {
-            nid: nbid,
-          }).then((response) => {
-            setNb(response.data.notebook);
+          const data = await axios.get(`/api/pagefuncs/getNbByPageId/${nbid}`)
 
-          });
+          setNb(data.data.notebook)
         } catch (error) {
           console.log(error)
           // Handle error if necessary

@@ -67,6 +67,7 @@ const formats = [
 export default function editpage() {
     const [title, setTitle] = useState()
     const [page, setPage] = useState({})
+    const [notebook, setNotebook] = useState({})
     const [content, setContent] = useState()
     const router = useRouter();
     const nid = router.query.pid
@@ -82,7 +83,9 @@ export default function editpage() {
         setPage(response.data.page);
         setTitle(response.data.page.title);
         setContent(response.data.page.content);
-        console.log(page)
+        const response2 = await axios.get(`/api/pagefuncs/getNbByPageId/${response.data.page.nbId}`)
+
+        setNotebook(response2.data.notebook)
       }
       fetchPageById();
     }, [nid]);
@@ -105,13 +108,14 @@ export default function editpage() {
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>        
         <Navbar/><br/>
-        {page && (
+        {page && notebook && (
               <>
               
             <div className="container" style={{maxWidth: 1000}} >
-              <a href={`/notebook/${page.nbId}`} style={{margin: 15}}>
-                <button className="btn btn-outline-dark">← Back</button>
-              </a><br/><br/>
+              <nav class="navbar" style={{margin:20, marginBottom: 0, marginTop: 0}}>
+              <h5>/ <a href={`/notebook/${notebook.id}`} >{notebook.name}</a> / {title}</h5>        
+
+            </nav><br/>
               <div>
               <QuillNoSSRWrapper readOnly={true} value={content} theme={"bubble"} style={{padding:0}}/>
 

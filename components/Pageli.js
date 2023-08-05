@@ -1,15 +1,27 @@
+import Link from "next/link"
+
 export default function Pageli(props) {
     if (props.title !== "") {
         return (
-            <a href={props.link} style={{textDecoration: 0}}>
-                <li class="list-group-item"><u>{props.title}</u></li>
-            </a>
+                <li class="list-group-item flex-column align-items-start" style={{borderRadius: 5, marginBottom: 15, border: "1px solid lightgray"}}>
+                    <Link href={props.link} style={{textDecoration: 0, fontSize: 17}}>
+
+                    {props.title}
+                    
+                    </Link>
+                    <div style={{marginTop: 7}}>
+                        {props.author}
+                    </div>
+                </li>
         )
     } else {
         return (
-            <a href={props.link} style={{textDecoration: 0}}>
-                <li class="list-group-item" ><u>Untitled page</u></li>
-            </a>
+            <li class="list-group-item flex-column align-items-start" style={{borderRadius: 5, marginBottom: 15, border: "1px solid lightgray"}}>
+                    <Link href={props.link} style={{textDecoration: 0}}>
+
+                    <u>Untitled</u>
+                    </Link>
+            </li>
 
         )
     }

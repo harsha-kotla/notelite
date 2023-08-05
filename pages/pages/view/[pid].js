@@ -6,17 +6,22 @@ import 'react-quill/dist/quill.snow.css'
 import dynamic from 'next/dynamic'
 import axios from "axios"
 import Link from "next/link";
-
+import NavbarPage from "@/components/NavbarPage";
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {	
 	ssr: false,
 	loading: () => <p>Loading ...</p>,
 	})
+  const sizes = ['12px', '14px', '16px']; // Customize your font sizes here
+
+
+// var fontSizeStyle = Quill.import('attributors/style/size');
+// fontSizeStyle.whitelist = ['24px', '48px', '100px', '200px'];
+// QuillNoSSRWrapper.register(fontSizeStyle, true);
 
 
 const modules = {
       toolbar: [
         [{ header: '1' }, { header: '2' }, { font: [16] }],
-        [{ size: [5] }],
         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
         [
           { list: 'ordered' },
@@ -26,6 +31,7 @@ const modules = {
         ],
         ['link', 'image', 'video'],
         ['clean', "code-block"],
+        ['font-sizes', ['12px']]
       ],
       clipboard: {
         // toggle to add extra line breaks when pasting HTML:
@@ -43,10 +49,7 @@ const modules = {
         },
       },
     }
-    /*
-      * Quill editor formats
-      * See https://quilljs.com/docs/formats/
-      */
+    
 const formats = [
   'header',
   'font',
@@ -107,23 +110,20 @@ export default function editpage() {
         <main>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>        
-        <Navbar/><br/>
+        {page && notebook && (<NavbarPage uemail={notebook.uemail} nbname={notebook.name} nbid={notebook.id} title={title}/>)}
         {page && notebook && (
               <>
               
             <div className="container" style={{maxWidth: 1000}} >
-              <nav class="navbar" style={{margin:20, marginBottom: 0, marginTop: 0}}>
-              <h5>/ <a href={`/notebook/${notebook.id}`} >{notebook.name}</a> / {title}</h5>        
-
-            </nav><br/>
-              <div>
-              <QuillNoSSRWrapper readOnly={true} value={content} theme={"bubble"} style={{padding:0}}/>
-
+              <div style={{marginTop: 15}}>
+              <div dangerouslySetInnerHTML={{ __html: content }}/>
+              
               </div><br/>
+             
             </div>
               </>
             )}
-        
+          
         </main>
           </>
       )

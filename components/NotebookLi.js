@@ -8,14 +8,14 @@ export default function NotebookLi(props) {
     return (
         <>
             <div>
-            <a href={`/notebook/${props.id}`} class="list-group-item list-group-item-action flex-column align-items-start">
+            <li class="list-group-item flex-column align-items-start" style={{borderRadius: 5, padding: 15, paddingLeft: 20, paddingRight: 20}}>
                 <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1" >{props.title}</h5>
+                <h5 class="mb-1" style={{fontSize: 18, marginBottom: 10}}><a href={`/notebook/${props.id}`} style={{textDecoration: 0}}>{props.title}</a></h5>
                 <small>Public</small>
                 </div>
                 <p class="mb-1">By {props.uemail}</p>
                 <p class="mb-1">{props.descr}</p>
-            </a>
+            </li>
             </div><br/>
         </>
     )

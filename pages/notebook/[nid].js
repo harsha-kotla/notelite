@@ -6,6 +6,7 @@ import axios from "axios"
 import Link from "next/link";
 import Pageli from "@/components/Pageli";
 import { useSession } from "next-auth/react"
+import NavbarPage from "@/components/NavbarPage";
 
 export default function notebook() {
     const { data: session } = useSession()
@@ -51,19 +52,23 @@ export default function notebook() {
       <main>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>       
-      <Navbar/><br/>
-      <div class="container" style={{maxWidth: 1100}}>
+      {notebook && (<NavbarPage uemail={notebook.uemail} nbid={notebook.id} nbname={notebook.name}/>)}<br/>
+      <div class="container" style={{maxWidth: 1000}}>
           {notebook && (
             <>
-            <nav class="navbar navbar-light" style={{borderBottom: "1px solid lightgray"}}>
+            <nav class="navbar" style={{paddingBottom: 0}}>
+              <h5>{notebook.name}</h5>        
+              <div class="form-inline">
+                <button className="btn btn-dark" style={{paddingTop: 2, paddingBottom: 2}}>★ Star (0)</button>
+            </div>
+            </nav>
+            {/* <nav class="navbar navbar-light" style={{borderBottom: "1px solid lightgray"}}>
                 <div>
             <a class="navbar-brand mb-0 h1" style={{marginRight:3, fontSize: 24}}>
             {notebook.name}
             </a> by {notebook.uemail}</div>
-            <div class="form-inline">
-                <button className="btn btn-dark" style={{paddingTop: 2, paddingBottom: 2}}>★ Star (0)</button>
-            </div>
-            </nav>
+
+            </nav> */}
 
             </>
           )}<br/>
@@ -77,14 +82,14 @@ export default function notebook() {
             {session && notebook && session.user.name === notebook.uemail && (
                 <>
                 {pages.map(p => 
-                <Pageli link={`/pages/edit/${p.id}`} title={p.title}/>
+                <Pageli link={`/pages/edit/${p.id}`} title={p.title} author={notebook.uemail}/>
             )}
                 </>
             )}
             {!(session && notebook && session.user.name === notebook.uemail) && (
                 <>
                 {pages.map(p => 
-                <Pageli link={`/pages/view/${p.id}`} title={p.title}/>
+                <Pageli link={`/pages/view/${p.id}`} title={p.title} author={notebook.uemail}/>
             )}
                 </>
             )}

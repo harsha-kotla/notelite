@@ -21,7 +21,7 @@ export default function NavbarPage(props) {
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
-            <div style={{marginTop: 2}}> <Link href="/" style={{textDecoration: 0, color: "black"}}>Notelite</Link> / {props.uemail} / <Link style={{textDecoration: 0}} href={`/notebook/${props.nbid}`}>{props.nbname}</Link> {props.title && (<>/</>)} {props.title}</div>        
+            <div style={{marginTop: 2}}> <Link href="/" style={{textDecoration: 0, color: "black"}}>Notelite</Link> / {props.uemail} / <Link style={{textDecoration: 0, color: "black"}} href={`/notebook/${props.nbid}`}>{props.nbname}</Link> {props.title && (<>/</>)} {props.title}</div>        
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

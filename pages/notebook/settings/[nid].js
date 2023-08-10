@@ -15,12 +15,12 @@ export default function notebook() {
     const nid = router.query.nid;
     const [notebook, setNotebook] = useState({})
     const [pages, setPages] = useState([])
-    
+    const [title, setTitle] = useState("")
     useEffect(() => {
         async function get() {
             const data = await axios.get(`/api/pagefuncs/getNbByPageId/${nid}`)
             setNotebook(data.data.notebook)
-    
+            setTitle(data.data.notebook.name)
             const res2 = await axios.get(`/api/notebookfuncs/getPagesByNotebook/${nid}`)
             setPages(res2.data.pages)
             
@@ -28,14 +28,14 @@ export default function notebook() {
         get()
         
     }, [nid])
-    console.log(pages)
-    function addPage() {
-        const d = axios.post("/api/pagefuncs/createPage", {
-            nid: nid,
-        }).then((response) => {
-            window.location.replace(`/pages/edit/${response.data.data.id}`)
+    
+
+    const updateTitle = async(e) => {
+        e.preventDefault();
+        await axios.post("/api/notebookfuncs/editTitle", {
+            nid: notebook.id,
+            title: title
         })
-      
     }
     return (
         <>
@@ -54,54 +54,15 @@ export default function notebook() {
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>       
       {notebook && (<NavbarPage uemail={notebook.uemail} nbid={notebook.id} nbname={notebook.name}/>)}<br/>
       <div class="container" style={{maxWidth: 1000}}>
-          {notebook && session && (
+          {notebook && (
             <>
-            <nav class="navbar" style={{paddingBottom: 10, borderBottom: "1px solid lightgray"}}>
-              <h4 style={{marginTop: 5}}>{notebook.name}</h4>        
-              <div class="form-inline">
-                {notebook.uemail === session.user.name && (
-                    <>
-                        <button className="btn btn-outline-dark" style={{paddingTop: 2, paddingBottom: 2, marginRight: 10}}><Link href={`/notebook/settings/${notebook.id}`} style={{textDecoration: 0, color: "black"}}>Settings</Link></button>
-
-                    </>
-                )}
-                <button className="btn btn-dark" style={{paddingTop: 2, paddingBottom: 2}}>★ Star (0)</button>
-            </div>
-            </nav>
-            {/* <nav class="navbar navbar-light" style={{borderBottom: "1px solid lightgray"}}>
-                <div>
-            <a class="navbar-brand mb-0 h1" style={{marginRight:3, fontSize: 24}}>
-            {notebook.name}
-            </a> by {notebook.uemail}</div>
-
-            </nav> */}
-
-            </>
-          )}<br/>
-          {session && notebook && session.user.name === notebook.uemail && (
-            <>  
-            <button className="btn btn-outline-dark btn-sm" onClick={addPage} style={{marginBottom: 20}}>+ New page</button><br/>
-
-            </>
-          )}
-            <ul class="list-group">
-            {session && notebook && session.user.name === notebook.uemail && (
-                <>
-                {pages.map(p => 
-                <Pageli link={`/pages/edit/${p.id}`} title={p.title} author={notebook.uemail}/>
-            )}
-                </>
-            )}
-            {!(session && notebook && session.user.name === notebook.uemail) && (
-                <>
-                {pages.map(p => 
-                <Pageli link={`/pages/view/${p.id}`} title={p.title} author={notebook.uemail}/>
-            )}
+            <input className="form-control" value={title} placeholder="Change title" onChange={(e) => setTitle(e.target.value)}></input>
+            <hr/>
+            <button className="btn btn-dark" onClick={updateTitle}>Save</button>
                 </>
             )}
             
            
-            </ul>
       </div>
       </main>
         </>

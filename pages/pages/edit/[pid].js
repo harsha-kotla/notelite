@@ -189,7 +189,7 @@ export default function editpage() {
       </Head>
       <main>
 
-      <h3><a href={`/pages/view/${nid}`}>You don't have access. Click here to redirect.</a></h3>
+      <center><h3 style={{marginTop: "25%"}}><a href={`/pages/view/${nid}`}>You don't have access. Click here to redirect.</a></h3></center>
 
       </main>
         </>

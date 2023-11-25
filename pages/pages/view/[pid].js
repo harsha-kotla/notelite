@@ -115,7 +115,7 @@ export default function editpage() {
               <>
               
             <div className="container" style={{maxWidth: 1000}} >
-              <div style={{marginTop: 15}}>
+              <div style={{marginTop: 25}}>
               <div dangerouslySetInnerHTML={{ __html: content }}/>
               
               </div><br/>

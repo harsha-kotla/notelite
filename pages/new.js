@@ -22,6 +22,7 @@ export default function New() {
             }
           })
           console.log(res)
+          location.replace("/")
         } catch(err) {
           alert(err)
         }
